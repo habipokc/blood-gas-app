@@ -26,7 +26,7 @@ class _ActivePatientList extends ConsumerWidget {
                     size: 64, color: Colors.white.withOpacity(0.15)),
                 const SizedBox(height: 20),
                 const Text(
-                  'Aktif Ameliyat Yok',
+                  'Aktif Takip Yok',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
@@ -35,7 +35,7 @@ class _ActivePatientList extends ConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Yeni bir ameliyat başlatmak için\naşağıdaki butona tıklayın',
+                  'Yeni bir takip başlatmak için\naşağıdaki butona tıklayın',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.4),
@@ -161,7 +161,7 @@ class _PatientDashboardState extends ConsumerState<PatientDashboard>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kan Gazı Takip'),
+        title: const Text('Blood Gas'),
         bottom: TabBar(
           controller: _tabController,
           tabs: const [

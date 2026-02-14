@@ -79,8 +79,8 @@ class ResultDetailScreen extends ConsumerWidget {
 
               const Divider(),
               _sectionHeader('Elektrolit Değerleri'),
-              _buildRow('cNa+', record.cNa, previous?.cNa, unit: 'mmol/L'),
               _buildRow('cK+', record.cK, previous?.cK, unit: 'mmol/L'),
+              _buildRow('cNa+', record.cNa, previous?.cNa, unit: 'mmol/L'),
               _buildRow('cCa2+', record.cCa, previous?.cCa, unit: 'mmol/L'),
               _buildRow('cCl-', record.cCl, previous?.cCl, unit: 'mmol/L'),
 

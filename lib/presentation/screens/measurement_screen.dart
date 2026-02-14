@@ -413,6 +413,17 @@ class _MeasurementContentState extends ConsumerState<_MeasurementContent> {
       // Update form — the ref.listen above will sync controllers
       ref.read(measurementFormProvider(widget.patientId).notifier).setFromOcr(values);
 
+      // Delete image file from disk after OCR (privacy: roadmap requirement)
+      try {
+        final fileToDelete = File(croppedFile.path);
+        if (await fileToDelete.exists()) {
+          await fileToDelete.delete();
+          print('[MeasurementScreen] Image deleted from disk after OCR');
+        }
+      } catch (e) {
+        print('[MeasurementScreen] Warning: Could not delete image: $e');
+      }
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('OCR: ${values.length} değer bulundu')),

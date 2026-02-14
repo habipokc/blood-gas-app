@@ -17,7 +17,7 @@ class BloodGasApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
-      title: 'Kan Gazı Takip',
+      title: 'Blood Gas',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,

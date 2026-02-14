@@ -1,75 +1,116 @@
-# Blood Gas Tracking App 🩸
+# Blood Gas 🩸
 
-![Flutter](https://img.shields.io/badge/Flutter-3.0+-02569B?logo=flutter)
-![Dart](https://img.shields.io/badge/Dart-3.0+-0175C2?logo=dart)
+![Flutter](https://img.shields.io/badge/Flutter-3.27+-02569B?logo=flutter)
+![Dart](https://img.shields.io/badge/Dart-3.2+-0175C2?logo=dart)
+![Platform](https://img.shields.io/badge/Platform-Android-3DDC84?logo=android)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-A specialized mobile application designed for anesthesiology residents to efficiently track, analyze, and manage patient blood gas results. This app leverages on-device OCR to quickly digitize results from blood gas analyzers, ensuring data accuracy and saving time during critical surgeries.
+Anestezi asistanları için tasarlanmış, ameliyat sırasında arteriyel kan gazı (AKG) değerlerini hızla dijitalleştirip takip etmeyi sağlayan mobil uygulama. Cihaz üzerinde çalışan OCR teknolojisi ile kan gazı cihazı çıktılarını anında okur — internet bağlantısı gerektirmez.
 
-## 🚀 Key Features
+> ⚠️ **Bu uygulama bir tıbbi cihaz DEĞİLDİR.** Tanı veya tıbbi tavsiye vermez. Değerleri her zaman orijinal basılı raporla doğrulayın.
 
-*   **⚡ Instant OCR Digitization**: Capture blood gas printouts using the camera. The app automatically parses pH, pCO2, pO2, Lactate, Glucose, and more.
-*   **🔍 Split-Screen Verification**: Review OCR results side-by-side with the original image to ensure 100% accuracy before saving.
-*   **📂 Patient Management**:
-    -   **Active Tracking**: Real-time monitoring of patients currently in surgery.
-    -   **Completed Archive**: Historical record of past surgeries.
-    -   **Trash/Restore**: Soft-delete functionality to recover accidentally deleted records.
-*   **📊 Visual Trends**: Dynamic charts visualization to track patient stability over time.
-*   **🔒 Secure & Local**: All data is stored locally on the device using SQLite, ensuring patient privacy and zero latency.
-*   **🌙 Health Theme**: Optimized Dark Mode (Teal/Health Palette) for low-light clinical environments.
-*   **🇹🇷 Localization**: Fully localized for Turkish clinical terminology (Ameliyathane, Asistan, Hasta ID).
+## ✨ Özellikler
 
-## 🛠️ Technology Stack
+| Özellik | Açıklama |
+|---------|----------|
+| **⚡ OCR ile Anlık Dijitalleştirme** | Kamera veya galeriden kan gazı çıktısını yükleyin — pH, pCO2, pO2, Laktat, Glukoz ve 27 parametre otomatik okunur |
+| **🔍 Bölünmüş Ekran** | OCR sonuçlarını orijinal görüntüyle yan yana kontrol edin |
+| **📊 Delta Karşılaştırma** | Mevcut vs önceki ölçüm farkları renkli oklarla gösterilir |
+| **📂 Hasta Yönetimi** | Devam Eden / Tamamlanan / Silinenler sekmeli yapı |
+| **🔒 Yerel & Güvenli** | Tüm veriler SQLite ile cihazda saklanır, 14 gün sonra otomatik silinir |
+| **📷 Gizlilik** | Görüntüler OCR sonrası diskten otomatik silinir |
+| **🌙 Koyu Tema** | Ameliyathane ortamı için optimize edilmiş teal/sağlık temalı koyu mod |
+| **🇹🇷 Türkçe** | Klinik terminoloji ile tam Türkçe arayüz |
 
-*   **Framework**: [Flutter](https://flutter.dev/)
-*   **State Management**: [Riverpod](https://riverpod.dev/)
-*   **Local Database**: [Drift (SQLite)](https://drift.simonbinder.eu/)
-*   **OCR**: [Google ML Kit](https://developers.google.com/ml-kit/vision/text-recognition)
-*   **Charts**: [FlChart](https://github.com/imaNNeo/fl_chart)
-*   **Image Processing**: [Image Cropper](https://pub.dev/packages/image_cropper) & [Image Picker](https://pub.dev/packages/image_picker)
+## 🏗️ Mimari
 
-## 📸 Screenshots
+Clean Architecture prensiplerine uygun katmanlı yapı:
 
-| Dashboard | Split Screen OCR | Result Details |
-|-----------|------------------|----------------|
-| *(Add Dashboard Screenshot)* | *(Add Split Screen Screenshot)* | *(Add Details Screenshot)* |
+```
+lib/
+├── core/          # Sabitler, yardımcı fonksiyonlar
+│   └── utils/     # TextParser, ImageProcessor, OcrService
+├── domain/        # Entity'ler, Repository interface'leri
+│   └── entities/  # Patient, BloodGasRecord (Freezed)
+├── data/          # Repository implementasyonları, Drift DB
+│   └── datasources/  # AppDatabase (SQLite)
+├── presentation/  # UI katmanı
+│   ├── screens/   # Dashboard, PatientDetail, Measurement, ResultDetail, Trash
+│   ├── state/     # Riverpod provider'lar
+│   └── widgets/   # PatientCard, LegalDisclaimer
+└── main.dart      # Tema, SplashScreen, StartupWrapper
+```
 
-## 🏁 Getting Started
+## 🛠️ Teknoloji
 
-### Prerequisites
+| Katman | Teknoloji |
+|--------|-----------|
+| Framework | [Flutter](https://flutter.dev/) 3.27+ |
+| State | [Riverpod](https://riverpod.dev/) + riverpod_generator |
+| Veritabanı | [Drift](https://drift.simonbinder.eu/) (SQLite) |
+| OCR | [Google ML Kit](https://pub.dev/packages/google_mlkit_text_recognition) |
+| Veri Modeli | [Freezed](https://pub.dev/packages/freezed) + json_serializable |
+| Görüntü | [Image Cropper](https://pub.dev/packages/image_cropper) + [Image Picker](https://pub.dev/packages/image_picker) |
 
-*   Flutter SDK (3.0+)
-*   Dart SDK
-*   Android Studio / VS Code
+## 📱 OCR Pipeline
 
-### Installation
+```
+Fotoğraf → EXIF Düzeltme → Gri Tonlama → Kontrast Artırma
+→ ML Kit OCR → Bounding Box ile Satır Yeniden Yapılandırma
+→ Fuzzy Label Eşleştirme → Bölüm Tabanlı Fallback Parsing
+→ Değer Aralığı Doğrulama → Kullanıcı Onayı → Kaydet
+```
 
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com/habipokc/blood-gas-app.git
-    cd blood-gas-app
-    ```
+**Desteklenen 27 Parametre:**
+pH, pCO2, pO2, ctHb, Hctc, sO2, FO2Hb, FCOHb, FHHb, FMetHb, cK+, cNa+, cCa2+, cCl-, cGlu, cLac, ctBil, mOsmc, pH(T), pCO2(T), pO2(T), ctO2c, p50c, cBase(B)c, cBase(Ecf)c, cHCO3-(P.st), cHCO3-(P)c
 
-2.  **Install dependencies**
-    ```bash
-    flutter pub get
-    ```
+## 🚀 Başlangıç
 
-3.  **Run the app**
-    ```bash
-    flutter run
-    ```
+### Gereksinimler
+- Flutter SDK 3.27+
+- Android Studio veya VS Code
+- Android cihaz veya emülatör (API 21+)
 
-### Code Generation (Drift/Riverpod)
-If you modify database tables or providers, run the build runner:
+### Kurulum
+
+```bash
+# Repo'yu klonlayın
+git clone https://github.com/habipokc/blood-gas-app.git
+cd blood-gas-app
+
+# Bağımlılıkları yükleyin
+flutter pub get
+
+# Uygulamayı çalıştırın
+flutter run
+```
+
+### Kod Üretimi (Drift/Riverpod/Freezed)
+
+Veritabanı tabloları, provider'lar veya entity'leri değiştirdiyseniz:
+
 ```bash
 flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
-## 🤝 Contributing
+### Uygulama İkonunu Güncelleme
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+`logo.png` dosyasını değiştirdikten sonra:
 
-## 📄 License
+```bash
+flutter pub run flutter_launcher_icons
+```
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 🧪 Test
+
+```bash
+# Unit testleri çalıştır
+flutter test test/unit/
+
+# Analiz
+flutter analyze
+```
+
+## 📄 Lisans
+
+Bu proje MIT Lisansı ile lisanslanmıştır — detaylar için [LICENSE](LICENSE) dosyasına bakın.
