@@ -5,7 +5,7 @@
 ![Platform](https://img.shields.io/badge/Platform-Android-3DDC84?logo=android)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-Anestezi asistanları için tasarlanmış, ameliyat sırasında arteriyel kan gazı (AKG) değerlerini hızla dijitalleştirip takip etmeyi sağlayan mobil uygulama. Cihaz üzerinde çalışan OCR teknolojisi ile kan gazı cihazı çıktılarını anında okur — internet bağlantısı gerektirmez.
+Anestezi doktorları için tasarlanmış, ameliyat sırasında arteriyel kan gazı (AKG) değerlerini hızla dijitalleştirip takip etmeyi sağlayan mobil uygulama. Cihaz üzerinde çalışan OCR teknolojisi ile kan gazı cihazı çıktılarını anında okur — internet bağlantısı gerektirmez.
 
 > ⚠️ **Bu uygulama bir tıbbi cihaz DEĞİLDİR.** Tanı veya tıbbi tavsiye vermez. Değerleri her zaman orijinal basılı raporla doğrulayın.
 
@@ -19,7 +19,6 @@ Anestezi asistanları için tasarlanmış, ameliyat sırasında arteriyel kan ga
 | **📂 Hasta Yönetimi** | Devam Eden / Tamamlanan / Silinenler sekmeli yapı |
 | **🔒 Yerel & Güvenli** | Tüm veriler SQLite ile cihazda saklanır, 14 gün sonra otomatik silinir |
 | **📷 Gizlilik** | Görüntüler OCR sonrası diskten otomatik silinir |
-| **🌙 Koyu Tema** | Ameliyathane ortamı için optimize edilmiş teal/sağlık temalı koyu mod |
 | **🇹🇷 Türkçe** | Klinik terminoloji ile tam Türkçe arayüz |
 
 ## 🏗️ Mimari
