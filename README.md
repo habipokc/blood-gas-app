@@ -21,6 +21,14 @@ Anestezi doktorları için tasarlanmış, ameliyat sırasında arteriyel kan gaz
 | **📷 Gizlilik** | Görüntüler OCR sonrası diskten otomatik silinir |
 | **🇹🇷 Türkçe** | Klinik terminoloji ile tam Türkçe arayüz |
 
+## 📸 Görseller
+
+| Giriş Ekranı & Önizleme | Sonuç Detay & Karşılaştırma |
+|:---:|:---:|
+| ![OCR Tarama](screenshots/photo_5875376417980222890_y.jpg) | ![Ana Sayfa](screenshots/photo_5875376417980222889_y.jpg) |
+| **Değer Karşılaştırma** | **Parametre Düzenleme & Ekleme** |
+| ![Sonuç Detay](screenshots/photo_5875376417980222891_y.jpg) | ![Parametre Düzenleme](screenshots/photo_5875376417980222892_y.jpg) |
+
 ## 🏗️ Mimari
 
 Clean Architecture prensiplerine uygun katmanlı yapı:
